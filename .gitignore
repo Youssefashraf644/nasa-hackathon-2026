@@ -10,3 +10,4 @@ dist/
 *.log
 chroma_db/
 *.pyc
+chroma_db
