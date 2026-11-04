@@ -34,7 +34,7 @@ else:
 retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 
 # LLM
-llm = ChatOllama(model="llama3.2:1b", temperature=0)
+llm = ChatOllama(model="qwen3:8b", temperature=0)
 
 # prompt
 prompt = ChatPromptTemplate.from_template("""
@@ -58,6 +58,8 @@ Answer:
 
 # helper to join retrieved chunks into one string
 def format_docs(docs):
+    if docs and isinstance(docs[0], list):
+        docs = [doc for group in docs for doc in group]
     return "\n\n".join(doc.page_content for doc in docs)
 
 
