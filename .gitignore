@@ -8,3 +8,5 @@ __pycache__/
 build/
 dist/
 *.log
+chroma_db/
+*.pyc
