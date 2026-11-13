@@ -9,7 +9,12 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from rag import CHROMA_DIR, EMBED_MODEL
+
+from chatbot.rag import CHROMA_DIR, EMBED_MODEL
+
+_CHATBOT_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_CHATBOT_DIR)
+DATA_DIR = os.path.join(_PROJECT_ROOT, "data")
 
 CHUNK_SIZE = 500           # short paragraph keeps fact + context 
 CHUNK_OVERLAP = 50         # overlap so no mid-fact split 

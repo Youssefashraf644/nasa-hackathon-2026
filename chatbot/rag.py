@@ -1,12 +1,14 @@
+import os
+
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 # --- Config
-
-CHROMA_DIR = "./chroma_db"  # where vector index lives
+_CHATBOT_DIR = os.path.dirname(os.path.abspath(__file__))   # ...\nasa-rag-bot\chatbot
+_PROJECT_ROOT = os.path.dirname(_CHATBOT_DIR)                # ...\nasa-rag-bot
+CHROMA_DIR = os.path.join(_PROJECT_ROOT, "chroma_db")         # where vector index lives
 EMBED_MODEL = "nomic-embed-text"
 LLM_MODEL = "qwen3:8b"
 TOP_K = 3  # chunk per artifact specific query
