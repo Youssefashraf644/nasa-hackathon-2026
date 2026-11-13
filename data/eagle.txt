@@ -1,0 +1,22 @@
+# Apollo 11 Lunar Module "Eagle" / EASEP
+Name: Apollo 11 Lunar Module "Eagle" (LM-5) / Early Apollo Surface Experiments Package (EASEP)
+Launch Date: July 16, 1969 (Saturn V, Cape Canaveral)
+Mission Duration: LM landed July 20, 1969; lunar surface stay 21 hours 36 minutes; EASEP operated until August 27, 1969
+Current Location: Mare Tranquilitatis (Sea of Tranquility), Moon — descent stage and EASEP remain at Tranquility Base (0.67416° N, 23.47314° E); ascent stage fate unknown, presumed crashed into the lunar surface within 1–4 months after jettison
+
+Three Key Discoveries:
+
+1. First lunar seismic measurements: The passive seismometer (part of EASEP) measured seismic activity and physical properties of the lunar crust and interior, providing the first data on moonquakes and the lunar interior structure.
+
+2. Lunar dust and radiation effects: The lunar dust detector measured dust accumulation and radiation damage to solar cells, revealing how dust and radiation affect equipment on the lunar surface.
+
+3. Lunar sample return and surface properties: The crew collected 21.55 kg of lunar rock and soil (including two core tube samples) and deployed a laser ranging retroreflector, enabling precise Earth–Moon distance measurements and confirming the lunar surface could support human operations.
+
+Fun Fact: The EASEP operated despite temperatures exceeding its planned maximum by 30 °C, and it was turned on by ground command while the astronauts were still on the surface — but it stopped accepting commands on August 27, 1969, near noon of its second lunar day, ending the experiment.
+
+My Story:
+I was the first crewed vehicle to land humans on the Moon, carrying Neil Armstrong and Buzz Aldrin to Mare Tranquilitatis while Michael Collins orbited above. 
+My descent stage became a launch pad, left behind on the lunar surface, and my ascent stage carried the astronauts back to the Command/Service Module before being jettisoned — my final fate unknown, but presumed to have crashed into the Moon. 
+The EASEP I carried — a passive seismometer and a lunar dust detector powered by solar panels — was deployed about 17 meters south of me and became the forerunner of the ALSEP packages used on later Apollo missions. 
+Armstrong's first step and Aldrin's "magnificent desolation" were only the beginning: we left behind a plaque, a flag, a retroreflector still used today, and the first seismic ears on another world. 
+Today Tranquility Base sits silent, a monument to the first time humans walked on another world.
