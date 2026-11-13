@@ -1,0 +1,50 @@
+{
+  "global": [
+    {
+      "question_id": "global-what-is-this",
+      "label": "What is this place?",
+      "question_text": "Where are you right now, and what does it look like around you?"
+    },
+    {
+      "question_id": "global-how-old",
+      "label": "How old are you?",
+      "question_text": "When were you launched or landed, and how long have you been here?"
+    },
+    {
+      "question_id": "global-why-left",
+      "label": "Why were you left behind?",
+      "question_text": "Why was it not possible to bring you back to Earth?"
+    },
+    {
+      "question_id": "global-message",
+      "label": "Any message for students?",
+      "question_text": "What would you like to say to students aged 10 to 16 who are learning about you?"
+    }
+  ],
+  "artifacts": {
+    "sojourner": [
+      { "question_id": "sojourner-purpose", "label": "Why were you sent to Mars?", "question_text": "What was your main mission on Mars?" },
+      { "question_id": "sojourner-discovery", "label": "What did you find?", "question_text": "What is your most important scientific discovery?" },
+      { "question_id": "sojourner-status", "label": "Where are you now?", "question_text": "What is your current status and location?" },
+      { "question_id": "sojourner-fun", "label": "Tell me a fun fact", "question_text": "What is one surprising or fun fact about you?" }
+    ],
+    "spirit": [
+      { "question_id": "spirit-purpose", "label": "Why were you sent to Mars?", "question_text": "What was your main mission on Mars?" },
+      { "question_id": "spirit-discovery", "label": "What did you find?", "question_text": "What is your most important scientific discovery?" },
+      { "question_id": "spirit-status", "label": "Where are you now?", "question_text": "What is your current status and location?" },
+      { "question_id": "spirit-fun", "label": "Tell me a fun fact", "question_text": "What is one surprising or fun fact about you?" }
+    ],
+    "opportunity": [
+      { "question_id": "opportunity-purpose", "label": "Why were you sent to Mars?", "question_text": "What was your main mission on Mars?" },
+      { "question_id": "opportunity-discovery", "label": "What did you find?", "question_text": "What is your most important scientific discovery?" },
+      { "question_id": "opportunity-status", "label": "Where are you now?", "question_text": "What is your current status and location?" },
+      { "question_id": "opportunity-fun", "label": "Tell me a fun fact", "question_text": "What is one surprising or fun fact about you?" }
+    ],
+    "eagle": [
+      { "question_id": "eagle-purpose", "label": "Why did you go to the Moon?", "question_text": "What was your mission on the Moon?" },
+      { "question_id": "eagle-discovery", "label": "What did you find?", "question_text": "What is the most important thing learned from your mission?" },
+      { "question_id": "eagle-status", "label": "Where are you now?", "question_text": "What is your current status and location?" },
+      { "question_id": "eagle-fun", "label": "Tell me a fun fact", "question_text": "What is one surprising or fun fact about you?" }
+    ]
+  }
+}
