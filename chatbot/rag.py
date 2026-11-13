@@ -48,7 +48,7 @@ def _format_docs(docs):
     return "\n\n".join(d.page_content for d in docs)
 
 
-def get_chain(artifact_id: str):
+def get_chain(artifact_id: str, artifact_name: str | None = None):
     """Build and return an LCEL chain scoped to a single artifact"""
     embeddings = OllamaEmbeddings(model=EMBED_MODEL)
 
@@ -59,10 +59,11 @@ def get_chain(artifact_id: str):
     )
 
     retriever = vectorstore.as_retriever(
-        search_kwargs={"k": TOP_K},  # filter added once metadata exists
+        search_kwargs={"k": TOP_K, "filter": {"artifact_id": artifact_id}}  # filter added once metadata exists
     )
 
     llm = ChatOllama(model=LLM_MODEL, temperature=0.2)  # low temp = steadier persona
+    display_name = artifact_name or artifact_id
 
     def _build_prompt_inputs(question: str) -> dict:
         """Turn the question string into dict ChatPromptTemplate needs"""
@@ -70,7 +71,7 @@ def get_chain(artifact_id: str):
         return {
             "context": _format_docs(docs),  # str {context}
             "question": question,  # str {question}
-            "artifact_name": artifact_id,  # str {artifact_name}
+            "artifact_name": display_name,  # str {artifact_name}
         }
 
     chain = _build_prompt_inputs | _PROMPT | llm | StrOutputParser()
