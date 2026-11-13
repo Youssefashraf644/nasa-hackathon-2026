@@ -64,8 +64,13 @@ export default function ChatWidget({ artifactId, artifactName, questions }) {
         ))}
         {isSending && (
           <div className="flex justify-start">
-            <div className="bg-slate-800 text-slate-400 rounded-lg px-4 py-2 text-sm italic">
-              {artifactName} is thinking...
+            <div className="bg-slate-800 text-slate-400 rounded-lg px-4 py-2 text-sm flex items-center gap-2">
+                <span>{artifactName} is thinking</span>
+                <span className="flex gap-1">
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </span>
             </div>
           </div>
         )}
