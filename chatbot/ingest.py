@@ -27,7 +27,7 @@ def ingest():
     paths = sorted(glob.glob(os.path.join(DATA_DIR, "*.txt")))
     print(f"Looking for .txt files in: {DATA_DIR}")
     if not paths:
-        print("No .txt files found , chroma_db untouched")
+        print("No .txt files found in {DATA_DIR}")
         return
     if os.path.exists(CHROMA_DIR):
         shutil.rmtree(CHROMA_DIR)
