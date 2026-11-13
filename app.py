@@ -87,7 +87,8 @@ def list_questions():
             {"question_id": q["question_id"], "label": q["label"]}
             for q in get_artifact_questions(aid)
         ]
-        return jsonify(payload)
+
+    return jsonify(payload)
 
 
 # --- session memory (dies when flask restarts)
@@ -138,7 +139,7 @@ def _artifact_name(artifact_id: str) -> str:
     for a in ARTIFACTS:
         if a["artifact_id"] == artifact_id:
             return a["name"]
-        return artifact_id
+    return artifact_id
 
 
 # ---- bridge to chatbot/rag.py
