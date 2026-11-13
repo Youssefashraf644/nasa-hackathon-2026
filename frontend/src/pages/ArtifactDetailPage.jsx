@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ChatWidget from '../components/ChatWidget' 
+import AdoptionCertificate from '../components/AdoptionCertificate'
 
 export default function ArtifactDetailPage() {
   const { artifact_id } = useParams() // gets "spirit" from the URL
@@ -53,6 +54,7 @@ export default function ArtifactDetailPage() {
       <main className="max-w-3xl mx-auto px-6 mt-10">
         {/* The ChatWidget gets the artifact id and the pre-fetched questions */}
         <ChatWidget artifactId={artifact_id} artifactName={artifact.name} questions={questions} />
+        <AdoptionCertificate artifactId={artifact_id} artifactName={artifact.name} />
       </main>
     </div>
   )
