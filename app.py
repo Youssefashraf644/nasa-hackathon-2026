@@ -1,93 +1,162 @@
 import os
+import uuid
 
-import streamlit as st
-from langchain_community.document_loaders import TextLoader
-from langchain_community.vectorstores import Chroma
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
-PERSIST_DIR = "./chroma_db"
+from chatbot.questions import (
+    get_artifact_questions,
+    get_global_questions,
+    resolve_question,
+)
+from chatbot.rag import get_chain
 
-# ---- Page config (must be the first Streamlit call) ----
-st.set_page_config(page_title="Abandoned but Not Forgotten", page_icon="🚀")
+app = Flask(__name__)
+CORS(app)
 
-# ---- Cache the RAG chain so it only builds once ----
-@st.cache_resource
-def build_rag_chain():
-    loader = TextLoader("nasa_data.txt", encoding="utf-8")
-    documents = loader.load()
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=400, chunk_overlap=50,
-        separators=["\n\n", "\n", ". ", " ", ""],
-    )
-    chunks = splitter.split_documents(documents)
+_CHAIN = None  # lazy built on first chat
 
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
-    if os.path.exists(PERSIST_DIR):
-        vectorstore = Chroma(persist_directory=PERSIST_DIR, embedding_function=embeddings)
-    else:
-        vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory=PERSIST_DIR)
 
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-    llm = ChatOllama(model="qwen3:8b", temperature=0)
+def _ensure_chain():
+    """build on first use so /health and artifacts still work if Ollama is temporarily down (/api/chat) the cause"""
+    global _CHAIN
+    if _CHAIN is None:
+        _CHAIN = _build_multi_artifact_chain()
+    return _CHAIN
 
-    prompt = ChatPromptTemplate.from_template("""
-You are a helpful space historian answering questions about NASA missions
-and hardware that was left behind on the Moon and Mars.
 
-Answer the question using ONLY the context below.
-If the answer is not in the context, say "I don't have that information."
-Be concise. Do not repeat the answer at the end.
+# ---- artifact metadata
+ARTIFACTS = [
+    {
+        "artifact_id": "sojourner",
+        "name": "Sojourner",
+        "launch_date": "December 4, 1996",
+        "mission_duration": "July 4 – September 27, 1997",
+        "location": "Ares Vallis, Mars",
+        "blurb": "The first wheeled rover to explore another planet.",
+    },
+    {
+        "artifact_id": "spirit",
+        "name": "Spirit",
+        "launch_date": "June 10, 2003",
+        "mission_duration": "2004 – 2011 (planned 90 days)",
+        "location": "Gusev Crater, Mars",
+        "blurb": "A twin rover that outlived its mission by 6 years.",
+    },
+    {
+        "artifact_id": "opportunity",
+        "name": "Opportunity",
+        "launch_date": "July 7, 2003",
+        "mission_duration": "2004 – 2019 (planned 90 days)",
+        "location": "Perseverance Valley, Mars",
+        "blurb": "The longest-distance driver on another world.",
+    },
+    {
+        "artifact_id": "eagle",
+        "name": "Eagle (Apollo 11)",
+        "launch_date": "July 16, 1969",
+        "mission_duration": "July 20–21, 1969",
+        "location": "Tranquility Base, the Moon",
+        "blurb": "The descent stage that carried the first humans to the Moon.",
+    },
+]
 
-Context:
-{context}
 
-Question: {question}
+@app.get("/api/health")
+def health():
+    """prove flask is up"""
+    return jsonify(status="ok")
 
-Answer:
-""")
 
-    def format_docs(docs):
-        if docs and isinstance(docs[0], list):
-            docs = [doc for group in docs for doc in group]
-        return "\n\n".join(doc.page_content for doc in docs)
+@app.get("/api/artifacts")
+def list_artifacts():
+    """Display metadata for the artifacts cards"""
+    return jsonify(artifacts=ARTIFACTS)
 
-    chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
-        | prompt | llm | StrOutputParser()
-    )
-    return chain, retriever
 
-# ---- Build once ----
-rag_chain, retriever = build_rag_chain()
+@app.get("/api/questions")
+def list_questions():
+    """Return every chip the UI needs without question_text"""
+    payload = {"global": [], "artifacts": {}}
+    for q in get_global_questions():
+        payload["global"].append({"question_id": q["question_id"], "label": q["label"]})
 
-# ---- Header ----
-st.title("🚀 Abandoned but Not Forgotten")
-st.caption("Ask about NASA hardware left behind on the Moon and Mars.")
+    for a in ARTIFACTS:
+        aid = a["artifact_id"]
+        payload["artifacts"][aid] = [
+            {"question_id": q["question_id"], "label": q["label"]}
+            for q in get_artifact_questions(aid)
+        ]
+        return jsonify(payload)
 
-# ---- Chat history in session state ----
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
-# ---- Render past messages ----
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+# --- session memory (dies when flask restarts)
+_SESSIONS: dict[str, list[dict]] = {}
+MAX_HISTORY_MESSAGES = 6
 
-# ---- Input box ----
-if user_input := st.chat_input("Ask a question..."):
-    # Show user message
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.markdown(user_input)
 
-    # Get answer
-    with st.chat_message("assistant"):
-        with st.spinner("Searching NASA archives..."):
-            answer = rag_chain.invoke(user_input)
-        st.markdown(answer)
+@app.post("/api/chat")
+def chat():
+    body = request.get_json(silent=True) or {}
+    artifact_id = body.get("artifact_id")
+    question_id = body.get("question_id")
+    session_id = body.get("session_id") or str(uuid.uuid4())
 
-    st.session_state.messages.append({"role": "assistant", "content": answer})
+    if not artifact_id or not question_id:
+        return jsonify(error="artifact_id and question_id are required"), 400
+
+    question_text = resolve_question(artifact_id, question_id)
+    if question_text is None:
+        return jsonify(error="unknown question_id for this artifact"), 400
+
+    # fetch or create session history
+    history = _SESSIONS.setdefault(session_id, [])
+
+    try:
+        chain = _ensure_chain()
+        reply = chain.invoke(
+            {
+                "question": question_text,
+                "artifact_id": artifact_id,
+                "artifact_name": _artifact_name(artifact_id),
+                "history": history[-MAX_HISTORY_MESSAGES:],
+            }
+        )
+    except Exception as e:
+        app.logger.exception("Chat failed")
+        return jsonify(error=f"chat failed: {e.__class__.__name__}"), 500
+
+    history.append({"role": "human", "content": question_text})
+    history.append({"role": "assistant", "content": reply})
+
+    # trim to last MAX_HISTORY after appending so next req is bounded
+    del history[:-MAX_HISTORY_MESSAGES]
+    return jsonify(reply=reply, session_id=session_id)
+
+
+def _artifact_name(artifact_id: str) -> str:
+    for a in ARTIFACTS:
+        if a["artifact_id"] == artifact_id:
+            return a["name"]
+        return artifact_id
+
+
+# ---- bridge to chatbot/rag.py
+
+
+def _build_multi_artifact_chain():
+    from chatbot.rag import get_chain
+
+    class _MultiArtifactChain:
+        def invoke(self, payload: dict):
+            artifact_id = payload["artifact_id"]
+            artifact_name = payload.get("artifact_name", artifact_id)
+            question = payload["question"]
+            chain = get_chain(artifact_id, artifact_name=artifact_name)
+            return chain.invoke(question)
+
+    return _MultiArtifactChain()
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)
