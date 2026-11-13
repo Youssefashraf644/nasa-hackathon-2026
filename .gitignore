@@ -10,3 +10,15 @@ dist/
 *.log
 chroma_db/
 *.pyc
+venv/
+.venv/
+env/
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.sqlite3
+*.db
+*.gguf
+*.bin
+models/
