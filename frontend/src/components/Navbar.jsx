@@ -3,10 +3,8 @@ import { Link, NavLink } from 'react-router-dom'
 export default function Navbar() {
   // A helper function to style active vs inactive links
   const linkClass = ({ isActive }) =>
-    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-      isActive
-        ? 'bg-slate-800 text-white'
-        : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+    `px-3 py-2 text-sm font-medium transition-all duration-300 relative group ${
+        isActive ? 'text-blue-400' : 'text-slate-300 hover:text-white'
     }`
 
   return (
