@@ -24,6 +24,7 @@ export default function Navbar() {
           <NavLink to="/series" className={linkClass}>Series</NavLink>
           <NavLink to="/stories" className={linkClass}>Stories</NavLink>
           <NavLink to="/images" className={linkClass}>Images</NavLink>
+          <NavLink to="/certificates" className={linkClass}>Certificates</NavLink>
         </div>
         
       </div>
