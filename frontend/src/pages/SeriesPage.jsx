@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 const VIDEOS = [
   {
     id: 'v1',
-    title: 'The Story of Sojourner',
+    title: 'The Story',
     description: 'How the first wheeled rover changed Mars exploration forever.',
     videoUrl: '/videos/sojourner.mp4', 
   },

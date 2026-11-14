@@ -5,8 +5,9 @@ import ArtifactDetailPage from './pages/ArtifactDetailPage'
 import CertificatesPage from './pages/CertificatesPage'
 import SeriesPage from './pages/SeriesPage'
 import ImagesPage from './pages/ImagesPage'
+import StoriesPage from './pages/StoriesPage'
 
-const StoriesPage = () => <div className="p-10 text-white max-w-5xl mx-auto"><h1 className="text-3xl font-bold">Stories</h1><p className="text-slate-400 mt-2">Coming soon...</p></div>
+
 
 
 function App() {
