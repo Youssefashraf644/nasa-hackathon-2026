@@ -3,8 +3,9 @@ import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
 import ArtifactDetailPage from './pages/ArtifactDetailPage'
 import CertificatesPage from './pages/CertificatesPage'
+import SeriesPage from './pages/SeriesPage'
 
-const SeriesPage = () => <div className="p-10 text-white max-w-5xl mx-auto"><h1 className="text-3xl font-bold">Mission Series</h1><p className="text-slate-400 mt-2">Coming soon...</p></div>
+
 const StoriesPage = () => <div className="p-10 text-white max-w-5xl mx-auto"><h1 className="text-3xl font-bold">Stories</h1><p className="text-slate-400 mt-2">Coming soon...</p></div>
 const ImagesPage = () => <div className="p-10 text-white max-w-5xl mx-auto"><h1 className="text-3xl font-bold">Image Gallery</h1><p className="text-slate-400 mt-2">Coming soon...</p></div>
 
