@@ -35,32 +35,31 @@ export default function ArtifactDetailPage() {
   if (!artifact) return <div className="p-10 text-white">Artifact not found.</div>
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20">
-      <header className="max-w-3xl mx-auto px-6 pt-10">
-        <Link to="/" className="text-sm text-blue-400 hover:text-blue-300">
+    <div className="min-h-screen pb-20">
+      <header className="max-w-4xl mx-auto px-6 pt-12 pb-8 border-b border-white/10">
+        <Link to="/" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block transition-colors">
           &larr; Back to artifacts
         </Link>
-        <h1 className="text-4xl font-bold mt-4">{artifact.name}</h1>
-        <p className="text-slate-300 mt-2">{artifact.blurb}</p>
+        <h1 className="text-4xl md:text-5xl font-extrabold text-white mt-2">{artifact.name}</h1>
+        <p className="text-lg text-slate-400 mt-3">{artifact.blurb}</p>
         
-        <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-slate-800 pt-6 text-sm">
-          <div>
-            <dt className="text-slate-500">Launched</dt>
-            <dd className="font-medium">{artifact.launch_date}</dd>
+        <dl className="mt-8 grid grid-cols-3 gap-6 text-sm">
+          <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+            <dt className="text-slate-500 uppercase tracking-wider text-xs mb-1">Launched</dt>
+            <dd className="font-medium text-slate-200">{artifact.launch_date}</dd>
           </div>
-          <div>
-            <dt className="text-slate-500">Mission Duration</dt>
-            <dd className="font-medium">{artifact.mission_duration}</dd>
+          <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+            <dt className="text-slate-500 uppercase tracking-wider text-xs mb-1">Mission Duration</dt>
+            <dd className="font-medium text-slate-200">{artifact.mission_duration}</dd>
           </div>
-          <div>
-            <dt className="text-slate-500">Current Location</dt>
-            <dd className="font-medium">{artifact.location}</dd>
+          <div className="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+            <dt className="text-slate-500 uppercase tracking-wider text-xs mb-1">Current Location</dt>
+            <dd className="font-medium text-slate-200">{artifact.location}</dd>
           </div>
         </dl>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 mt-10">
-        {/* The ChatWidget gets the artifact id and the pre-fetched questions */}
+      <main className="max-w-4xl mx-auto px-6 mt-10">
         <ChatWidget artifactId={artifact_id} artifactName={artifact.name} questions={questions} />
         <AdoptionCertificate artifactId={artifact_id} artifactName={artifact.name} />
       </main>
