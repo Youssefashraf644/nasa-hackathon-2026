@@ -15,7 +15,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen text-slate-100">
       <header className="max-w-5xl mx-auto px-6 pt-16 pb-10">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           Abandoned but Not Forgotten
