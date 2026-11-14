@@ -8,12 +8,19 @@ export default function ArtifactDetailPage() {
   const [artifact, setArtifact] = useState(null)
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     // Fetch both the artifact metadata and its questions in parallel
     Promise.all([
-      fetch('/api/artifacts').then(r => r.json()),
-      fetch('/api/questions').then(r => r.json())
+      fetch('/api/artifacts').then(r => {
+        if (!r.ok) throw new Error("Failed to load artifacts")
+        return r.json()
+      }),
+      fetch('/api/questions').then(r => {
+        if (!r.ok) throw new Error("Failed to load questions")
+        return  r.json()
+      })
     ]).then(([artifactsData, questionsData]) => {
       // Find the specific artifact this URL is asking for
       const found = artifactsData.artifacts.find(a => a.artifact_id === artifact_id)
@@ -24,6 +31,7 @@ export default function ArtifactDetailPage() {
   }, [artifact_id]) // Re-run if the user navigates directly to another artifact URL
 
   if (loading) return <div className="p-10 text-white">Loading…</div>
+  if (error) return <div className="p-10 text-red-400">Error: {error}. Run the back end</div>
   if (!artifact) return <div className="p-10 text-white">Artifact not found.</div>
 
   return (
